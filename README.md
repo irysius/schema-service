@@ -22,7 +22,7 @@ To instantiate a service:
 Before using it, you need to initialize the service with the schema folder's location:
 
 	schemaService.initialize('./schemas').then(() => {
-		return schemaService.validate(
+		return SchemaService.validate(
 			{}, // config object
 			schemaService.schemas['configuration']).then(instance => {
 				// continue working with the validated object.
@@ -34,3 +34,29 @@ Before using it, you need to initialize the service with the schema folder's loc
 For consistency with my other services, initialize always returns a Promise.
 
 The above example assumes a file at `./schemas/configuration.json` exists, that follows the format specified by [json-schema](http://json-schema.org).
+
+## API
+### SchemaService.validate
+`SchemaService.validate(data: any, schema: any) => Promise<any>`
+
+Validates given object data against provided schema. 
+
+If the data validates, returns the data wrapped in a Promise.
+
+If the data isn't valid, returns an Error object with the additional fields: `instance` and `errors`, for further inspection.
+ 
+### instance.initialize
+`instance.initialize(schemaFolder: String) => Promise`
+
+Goes through the provided folder and attaches all json files to `instance.schemas`.
+
+You gain access to the different schemas by referring to them by filename in `instance.schemas`.
+
+For example, if the file `outbound.json` exists in the schema folder, then you can access its contents via `instance.schemas['outbound']`.
+
+### instance.schemas
+`instance.schemas`
+
+Returns a hash of all schemas located via `instance.initialize`.
+
+If this property is accessed before initializing the service, the service throws an error.

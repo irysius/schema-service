@@ -25,7 +25,7 @@ describe('schema-service', function () {
 		var schemaService = SchemaService();
 		var invalidObject = {};
 		schemaService.initialize(schemaPath).then(function () {
-			return schemaService.validate(
+			return SchemaService.validate(
 				invalidObject,
 				schemaService.schemas['inbound']).then(function (result) {
 					throw new Error('Expected invalid object to throw validation error.');
@@ -46,7 +46,7 @@ describe('schema-service', function () {
 			age: 21
 		};
 		schemaService.initialize(schemaPath).then(function () {
-			return schemaService.validate(
+			return SchemaService.validate(
 				validObject,
 				schemaService.schemas['inbound']).then(function (result) {
 					expect(result).to.eql(validObject);

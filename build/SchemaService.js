@@ -54,7 +54,6 @@ function SchemaService() {
 	}
 
 	var proxy = {
-		validate: validateData,
 		initialize: initializeSchemas
 	};
 
@@ -70,5 +69,7 @@ function SchemaService() {
 
 	return proxy;
 }
+
+SchemaService.validate = validateData;
 
 module.exports = SchemaService;
