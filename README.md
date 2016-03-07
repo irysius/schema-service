@@ -33,4 +33,4 @@ Before using it, you need to initialize the service with the schema folder's loc
 	
 For consistency with my other services, initialize always returns a Promise.
 
-The above example assumes a file at `./schemas/configuration.json` exists, that follows the format specified by [json-schema](http://json-schema.org)
+The above example assumes a file at `./schemas/configuration.json` exists, that follows the format specified by [json-schema](http://json-schema.org).
