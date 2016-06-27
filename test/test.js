@@ -12,8 +12,8 @@ var schemaPath = PATH.resolve(__dirname, './schemas');
 describe('schema-service', function () {
 	it('is expected to load schemas from a folder', function (done) {
 		var schemaService = SchemaService();
-		schemaService.initialize(schemaPath).then(function () {
-			expect(schemaService.schemas).to.contain.keys('inbound', 'configuration');
+		schemaService.initialize(schemaPath).then(function (schemas) {
+			expect(schemas).to.contain.keys('inbound', 'configuration');
 		}).then(function () {
 			done();	
 		}).catch(function (err) {
@@ -24,10 +24,10 @@ describe('schema-service', function () {
 	it('is expected to reject invalid objects', function (done) {
 		var schemaService = SchemaService();
 		var invalidObject = {};
-		schemaService.initialize(schemaPath).then(function () {
+		schemaService.initialize(schemaPath).then(function (schemas) {
 			return SchemaService.validate(
 				invalidObject,
-				schemaService.schemas['inbound']).then(function (result) {
+				schemas['inbound']).then(function (result) {
 					throw new Error('Expected invalid object to throw validation error.');
 				}).catch(function (err) {
 					expect(err).to.contain.keys('instance', 'errors');
@@ -45,10 +45,10 @@ describe('schema-service', function () {
 			name: "eman",
 			age: 21
 		};
-		schemaService.initialize(schemaPath).then(function () {
+		schemaService.initialize(schemaPath).then(function (schemas) {
 			return SchemaService.validate(
 				validObject,
-				schemaService.schemas['inbound']).then(function (result) {
+				schemas['inbound']).then(function (result) {
 					expect(result).to.eql(validObject);
 				});
 		}).then(function () {

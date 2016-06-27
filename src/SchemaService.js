@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var fs = require('fs');
 var PATH = require('path');
+var Logger = require('@irysius/utils').Logger;
 var validate = require('jsonschema').validate;
 
 function validateData(data, schema) {
@@ -18,11 +19,16 @@ function validateData(data, schema) {
 	});
 }
 
-function SchemaService() {
+function SchemaService({ logger = null } = {}) {
+	logger = logger || Logger.silent();
+	if (!Logger.isLoggerValid(logger)) {
+		throw new Error('SchemaService is passed an invalid logger.');
+	}
+
 	var schemas;
 	
 	function initializeSchemas(schemaFolder) {
-		console.info('SchemaService initializing.');
+		logger.info('SchemaService initializing.');
 		schemas = {};
 		var records = [];
 		try {
@@ -40,11 +46,11 @@ function SchemaService() {
 				let json = JSON.parse(rawText);
 				schemas[name] = json;
 			} catch (e) {
-				console.error(`Error reading schema from: ${path}`);
-				console.error(e);
+				logger.error(`Error reading schema from: ${path}`);
+				logger.error(e);
 			}
 		});
-		return Promise.resolve();
+		return Promise.resolve(schemas);
 	}
 	
 	var proxy = {
